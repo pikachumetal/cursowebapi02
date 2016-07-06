@@ -7,10 +7,12 @@ using System.Web.Http;
 namespace ConsoleApplicationOWIN.Controllers
 {
     [RoutePrefix("api/v3/persons")]
+    [Authorize]
     public class PersonsController : ApiController
     {
         [Route("", Name = "ListPersons")]
         [HttpGet]
+        [AllowAnonymous]
         public IHttpActionResult ListPersons()
         {
             try
