@@ -5,6 +5,8 @@ using ConsoleApplicationOWIN.IoC;
 using ConsoleApplicationOWIN.Providers;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Owin;
 using Swashbuckle.Application;
 using System;
@@ -41,7 +43,13 @@ namespace ConsoleApplicationOWIN
 
             config.EnableSwagger(c => c.SingleApiVersion("v3", "Curso Web Api 2.2")).EnableSwaggerUi();
             config.MapHttpAttributeRoutes();
+
             config.Formatters.Add(new CsvTypeFormatter());
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
+
+            config.Formatters.JsonFormatter.SerializerSettings.NullValueHandling = NullValueHandling.Include;
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
             config.Services.Add(typeof(ValueProviderFactory), new HeaderValueProviderFactory());
             config.Services.Add(typeof(ValueProviderFactory), new DummyValueProviderFactory());
 
@@ -74,8 +82,6 @@ namespace ConsoleApplicationOWIN
 
             // Token Generation
             app.UseOAuthAuthorizationServer(OAuthServerOptions);
-            var bearerAuthenticationOptions = new OAuthBearerAuthenticationOptions();
-            app.UseOAuthBearerAuthentication(bearerAuthenticationOptions);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
         }
     }
