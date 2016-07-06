@@ -1,16 +1,12 @@
 ﻿using ConsoleApplicationOWIN.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace ConsoleApplicationOWIN.Controllers
 {
-    [RoutePrefix("api/v2/persons")]
+    [RoutePrefix("api/v3/persons")]
     public class PersonsController : ApiController
     {
         [Route("", Name = "ListPersons")]
@@ -21,8 +17,8 @@ namespace ConsoleApplicationOWIN.Controllers
             {
                 //!? throw new InvalidOperationException("desastre!");
                 return Ok(new[] {
-                    new Person() { Id= 1, Name="Person 1 OWIN"},
-                    new Person() { Id= 2, Name="Person 2 OWIN"}
+                    new Person() { Id= 1, Name="Person 1 Self OWIN"},
+                    new Person() { Id= 2, Name="Person 2 Self OWIN"}
                 });
             }
             catch (Exception e)
@@ -40,9 +36,9 @@ namespace ConsoleApplicationOWIN.Controllers
                 switch (id)
                 {
                     case 1:
-                        return this.Request.CreateResponse(new Person() { Id = 1, Name = "Person 1 OWIN" });
+                        return this.Request.CreateResponse(new Person() { Id = 1, Name = "Person 1 Self OWIN" });
                     case 2:
-                        return this.Request.CreateResponse(new Person() { Id = 2, Name = "Person 2 OWIN" });
+                        return this.Request.CreateResponse(new Person() { Id = 2, Name = "Person 2 Self OWIN" });
                     default:
                         return this.Request.CreateResponse(HttpStatusCode.NoContent);
                 }
