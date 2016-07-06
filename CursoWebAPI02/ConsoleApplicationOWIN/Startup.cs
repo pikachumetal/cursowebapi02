@@ -72,6 +72,17 @@ namespace ConsoleApplicationOWIN
         /// <param name="app"></param>
         public void ConfigureOAuth(IAppBuilder app)
         {
+            //http://localhost:9000/api/v3/token
+            //Header ->
+            //Content-Type - application/x-www-form-urlendoded
+
+            //Body ->
+            //grant_type - password
+            //username - pikachumetal
+            //password - secret
+
+            //EN la llamada en Header ->
+            //Authorization - Bearer {key}
             OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
             {
                 AllowInsecureHttp = true,
