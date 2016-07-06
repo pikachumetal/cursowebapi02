@@ -1,27 +1,47 @@
-﻿using ConsoleApplicationOWIN.Model;
+﻿using ConsoleApplicationOWIN.IoC;
+using ConsoleApplicationOWIN.Model;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace ConsoleApplicationOWIN.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [RoutePrefix("api/v3/persons")]
     [Authorize]
     public class PersonsController : ApiController
     {
+        private readonly IPersonsRepository _pq;
+        //public PersonsController()
+        //{
+
+        //}
+        /// <summary>
+        /// 
+        /// </summary>
+        public PersonsController(IPersonsRepository pq)
+        {
+            this._pq = pq;
+        }
+
+        /// <summary>
+        /// Retorna una llista de personas
+        /// </summary>
+        /// <returns>Person[]</returns>
         [Route("", Name = "ListPersons")]
         [HttpGet]
         [AllowAnonymous]
+        [ResponseType(typeof(Person[]))]
         public IHttpActionResult ListPersons()
         {
             try
             {
                 //!? throw new InvalidOperationException("desastre!");
-                return Ok(new[] {
-                    new Person() { Id= 1, Name="Person 1 Self OWIN"},
-                    new Person() { Id= 2, Name="Person 2 Self OWIN"}
-                });
+                return Ok(_pq.GetAll());
             }
             catch (Exception e)
             {
@@ -29,8 +49,14 @@ namespace ConsoleApplicationOWIN.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Route("{id}", Name = "PersonById")]
         [HttpGet]
+        [ResponseType(typeof(Person))]
         public HttpResponseMessage PersonById(int id)
         {
             try
@@ -51,6 +77,11 @@ namespace ConsoleApplicationOWIN.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
         [Route("", Name = "AddPerson")]
         [HttpPost]
         public HttpResponseMessage AddPerson([FromBody]Person person)
@@ -65,6 +96,12 @@ namespace ConsoleApplicationOWIN.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <param name="person"></param>
+        /// <returns></returns>
         [Route("{personId}", Name = "UpdatePerson")]
         [HttpPut]
         public HttpResponseMessage UpdatePerson(int personId, [FromBody]Person person)
@@ -79,6 +116,11 @@ namespace ConsoleApplicationOWIN.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <returns></returns>
         [Route("{personId}", Name = "DeletePerson")]
         [HttpDelete]
         public HttpResponseMessage DeletePerson(int personId)
