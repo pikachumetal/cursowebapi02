@@ -142,6 +142,7 @@
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="Controllers\PersonsController.cs" />
+    <Compile Include="Formatter\CsvTypeFormatter.cs" />
     <Compile Include="IoC\IPersonsRepository.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="Program.cs" />
@@ -151,6 +152,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Providers\DummyValueProvider.cs" />
+    <Compile Include="Providers\HeaderValueProvider.cs" />
     <Compile Include="Providers\SimpleAuthorizationServerProvider.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

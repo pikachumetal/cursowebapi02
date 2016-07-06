@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.WebApi;
+using ConsoleApplicationOWIN.Formatter;
 using ConsoleApplicationOWIN.IoC;
 using ConsoleApplicationOWIN.Providers;
 using Microsoft.Owin;
@@ -9,6 +10,7 @@ using Swashbuckle.Application;
 using System;
 using System.Reflection;
 using System.Web.Http;
+using System.Web.Http.ValueProviders;
 
 [assembly: OwinStartup(typeof(ConsoleApplicationOWIN.Startup))]
 
@@ -39,6 +41,9 @@ namespace ConsoleApplicationOWIN
 
             config.EnableSwagger(c => c.SingleApiVersion("v3", "Curso Web Api 2.2")).EnableSwaggerUi();
             config.MapHttpAttributeRoutes();
+            config.Formatters.Add(new CsvTypeFormatter());
+            config.Services.Add(typeof(ValueProviderFactory), new HeaderValueProviderFactory());
+            config.Services.Add(typeof(ValueProviderFactory), new DummyValueProviderFactory());
 
             var builder = new ContainerBuilder();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());

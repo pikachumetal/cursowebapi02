@@ -1,10 +1,12 @@
 ﻿using ConsoleApplicationOWIN.IoC;
 using ConsoleApplicationOWIN.Model;
+using ConsoleApplicationOWIN.Providers;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.ValueProviders;
 
 namespace ConsoleApplicationOWIN.Controllers
 {
@@ -36,7 +38,7 @@ namespace ConsoleApplicationOWIN.Controllers
         [HttpGet]
         [AllowAnonymous]
         [ResponseType(typeof(Person[]))]
-        public IHttpActionResult ListPersons()
+        public IHttpActionResult ListPersons([ValueProvider(typeof(HeaderValueProviderFactory))] string UserAgent,[FromUri]Filter  filter)
         {
             try
             {
@@ -134,5 +136,11 @@ namespace ConsoleApplicationOWIN.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
             }
         }
+    }
+
+    public class Filter
+    {
+        public int Id { get; set; }
+        public string Search { get; set; }
     }
 }
